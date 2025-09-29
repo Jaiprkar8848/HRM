@@ -1,0 +1,341 @@
+Subject: Referee Consent for Verification for Jaiprakash(25535014)
+
+Dear Sir/Mam,
+
+I hope this message finds you well.
+I am writing to provide my consent to serve as a referee for Jaiprakash(25535014), who has applied to your institute. I confirm that I am happy to be contacted for any verification purposes, if required.
+
+Please feel free to reach out to me for any additional information or clarifications.
+
+Best regards,
+Dr. Manju Vyas
+Head of Department
+Department of Artificial Intelligence and Data Science
+Jaipur Engineering College and Research Centre
+
+
+
+
+
+Subject: Confirmation of Project Details for Jaiprakash(25535014)
+
+Respected Placement and Internship Cell of IIT Roorkee,
+
+I hope this email finds you well.
+
+This is to certify that Jaiprakash(25535014) has worked under my supervision on the following project:
+
+Project Title: Cloudburst Prediction System
+Duration: 2.5 months
+Start Date: 21-02-2024
+End Date: 06-05-2024
+
+
+Best regards,
+Mrs. Anima Sharma
+Assistant Professor
+Department of Artificial Intelligence and Data Science
+Jaipur Engineering College and Research Centre
+
+
+Subject: Confirmation of Project Details for Jaiprakash(25535014)
+
+Respected Placement and Internship Cell of IIT Roorkee,
+
+I hope this email finds you well.
+
+This is to certify that Jaiprakash has worked under my supervision on the following project:
+
+Project Title: Diabetes Prediction
+Duration: 17 days
+Start Date: 06-09-2023
+End Date: 22-09-2023
+
+
+Best regards,
+Mrs. Geerija Lavania
+Assistant Professor
+Department of Artificial Intelligence and Data Science
+Jaipur Engineering College and Research Centre
+
+
+
+Subject: Confirmation of Project Details for Jaiprakash(25535014)
+
+Respected Placement and Internship Cell of IIT Roorkee,
+
+I hope this email finds you well.
+
+This is to certify that Jaiprakash has worked under my supervision on the following project:
+
+Project Title: Flipkart Review Scrapper
+Duration: 16 days
+Start Date: 17-01-2023
+End Date: 01-02-2023
+
+
+Best regards,
+Dr. Manju Vyas
+Head of Department
+Department of Artificial Intelligence and Data Science
+Jaipur Engineering College and Research Centre
+
+
+
+
+Subject: Confirmation of POR of Jaiprakash
+
+Dear Sir/Madam,
+
+I hope this email finds you well.
+
+This is to formally certify that Jaiprakash held the position of Cinematography head in the JECRC MUN Society.
+
+The details of the position are as follows:
+
+Position Title: Cinematography Head
+Duration: 1 year + 1 month
+Start Date: 15-02-2022
+End Date: 15-03-2023
+
+Faculty-in-Charge: Dr. Sonia Khubchandani
+
+Please feel free to reach out in case any further information is required.
+
+Best regards,
+Dr. Sonia Khubchandani
+Faculty Advisor
+JECRC MUN Society
+Jaipur Engineering College and Research Centre
+
+
+
+
+#include<bits/stdc++.h>
+using namespace std;
+#define N 10
+#define M 5
+
+// Problem 2
+void* f(void *p){
+    cout<<"Thread created"<<endl;
+    return NULL;
+} 
+
+// Problem 3
+int currIdx=0;
+
+// problem 4
+// shared variable to protect currIdx and SLL
+pthread_mutex_t idM;
+pthread_mutex_t listM;
+// Node structure
+struct Node{
+    int data;
+    Node* next;
+};
+
+struct required{
+    vector<int>* vj;
+};
+// initially LL is empty
+Node* head=NULL;
+
+void insertIntoLL(int val){
+    Node* nn=new Node{val,NULL};
+    // entry section
+    pthread_mutex_lock(&listM);
+    // critical section
+    nn->next=head;
+    head=nn;
+    pthread_mutex_unlock(&listM);
+}
+
+void* f1(void* a){
+    required *args = (required *)a;
+    while(true){
+        vector<int> &vj=*(args->vj);
+        int i;
+
+        // lock index mutex
+        pthread_mutex_lock(&idM);
+        if(currIdx>=vj.size()){
+            pthread_mutex_unlock(&idM);
+            break;
+        }
+
+        i=currIdx;
+        currIdx++;
+        pthread_mutex_unlock(&idM);
+
+        int val=vj[i];
+        insertIntoLL(val);
+
+        cout<<vj[i]<<" inserted into Linked List"<<endl;
+    }
+    return NULL;
+}
+
+// problem 5-> preserving original order
+int curridx=0;
+Node* headA=NULL;
+Node* currA=NULL;
+void insertIntoLLSame(int val){
+    Node* nn=new Node{val,NULL};
+    // entry section
+    pthread_mutex_lock(&listM);
+    // critical section
+    if(headA==NULL)
+        headA=nn;
+    else
+        currA->next=nn;
+    currA=nn;
+    pthread_mutex_unlock(&listM);
+}
+
+void* f2(void* a){
+    required *args = (required *)a;
+    while(true){
+        int i;
+        vector<int> &vj=*(args->vj);
+        // lock index mutex
+        pthread_mutex_lock(&idM);
+        if(curridx>=vj.size()){
+            pthread_mutex_unlock(&idM);
+            break;
+        }
+
+        i=curridx;
+        curridx++;
+        pthread_mutex_unlock(&idM);
+
+        int val=vj[i];
+        insertIntoLLSame(val);
+
+        cout<<vj[i]<<" inserted into Linked List"<<endl;
+    }
+    return NULL;
+}
+
+// Problem 6
+struct requirements
+{
+    Node *head;
+    vector<int> *pv;
+    int *result;
+};
+
+void *checkSeq(void *arg)
+{
+    // pointer to a structure
+    requirements *args = (requirements *)arg;
+    Node *start = args->head;
+    vector<int> &rv = *(args->pv); // rv is reference to vector v
+    int n = rv.size();
+    int i = 0;
+    while (start && i < n)
+    {
+        if (start->data != rv[i])
+        {
+            *(args->result) = 0;
+            return NULL;
+        }
+        start = start->next;
+        i++;
+    }
+    *(args->result) = (start == NULL && i == n);
+    return NULL;
+}
+
+int main(){
+    // Problem 1
+    vector<int> jp(N);
+    // creating object 
+    ifstream jpFile("file1.txt");
+
+    // file can't opened
+    if(jpFile.is_open()==0){
+        cout<<"Some error in opening"<<endl;
+        return 0;
+    }
+    
+    string x;
+    int i=0;
+    // reading file line by line 
+    while(getline(jpFile,x))
+        jp[i++]=stoi(x);
+    
+    jpFile.close();
+
+    // problem 2
+    int k;
+    pthread_t pj[M];  // collection of m threads
+    for(k=0;k<M;k++){
+        pthread_create(&pj[k],NULL,f,NULL);
+        pthread_join(pj[k],NULL);
+    }
+
+    // problem 4
+    int n=4;
+    pthread_t th[n];
+
+    //  mutex initialize krdo
+    pthread_mutex_init(&idM,NULL);
+
+    // create thread and join
+    required r={&jp};
+    for(int i=0;i<n;i++){
+        pthread_create(&th[i],NULL,f1,&r);
+        pthread_join(th[i],NULL);
+    }
+
+    Node* start=head;
+    while(start){
+        cout<<start->data<<"->";
+        start=start->next;
+    }
+    cout<<"NULL"<<endl;
+
+    // destroy the mutex
+    pthread_mutex_destroy(&idM);
+    pthread_mutex_destroy(&listM);
+
+    // problem 5
+    int n5=4;
+    pthread_t jpj[n5];
+    required rA={&jp};
+    //  mutex initialize krdo
+    pthread_mutex_init(&idM,NULL);
+
+    // create thread and join
+    for(int i=0;i<n5;i++){
+        pthread_create(&jpj[i],NULL,f2,&rA);
+        pthread_join(jpj[i],NULL);
+    }
+
+    Node* startA=headA;
+    while(startA){
+        cout<<startA->data<<"->";
+        startA=startA->next;
+    }
+    cout<<"NULL"<<endl;
+
+    // destroy the mutex
+    pthread_mutex_destroy(&idM);
+    pthread_mutex_destroy(&listM);
+
+    // Problem 6
+    // thread for verify
+    pthread_t t;
+    int ans = 0;
+    // passing actual arguments to structure variable
+    requirements r2 = {head, &jp, &ans};
+
+    pthread_create(&t, NULL, checkSeq, &r);
+    pthread_join(t, NULL);
+
+    if (ans == 1)
+        cout << "Both LL and vector are sequentially same";
+    else
+        cout << "Both LL and vector are not sequentially same";
+}
